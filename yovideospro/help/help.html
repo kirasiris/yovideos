@@ -1,0 +1,293 @@
+<!Doctype html>
+<head lang="en">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>YoVideos Pro-version Documentation</title>
+<!-- Framework CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style type="text/css" media="screen">
+body{
+background-color: #edebe6;
+}
+.col-md-12{
+	background-color: #FFFFFF;
+    margin-top: 30px;
+    margin-bottom: 30px;
+	}
+.page-header{
+	border-bottom:3px solid #FFC600;
+	}
+</style>
+</head>
+
+
+<body>
+<div class="container">
+<div class="row">
+<div class="col-md-12">
+<h3 class="text-center page-header">&ldquo;YoVideos Pro - WordPress Video Hosting &rdquo; <br><small>Documentation by &ldquo;<a href="https://blogpersonal.net/" target="_blank">Kevin Fonseca</a>&rdquo; v1.0</small></h3>
+
+<h1 class="text-center">&ldquo;YoVideos Pro-Version&rdquo;</h1>
+
+<div class="borderTop">
+<div class="span-6 colborder info prepend-1">
+<p class="prepend-top">
+<strong>
+Created: 10/06/2017<br>
+By: Kevin Azuara Fonseca<br>
+Email: <a href="mailto:kebin1421@hotmail.com">kebin1421@hotmail.com</a><br>
+Live Preview: <a href="http://demo2pro.blogpersonal.net/" target="_blank">YoVideos Pro Version</a>
+</strong>
+</p>
+</div><!-- end div .span-6 -->		
+
+<div class="span-12 last">
+<p class="prepend-top append-0">Thank you for purchasing my theme. If you have any questions that are beyond the scope of this help file, please feel free to email via my user page contact form <a href="https://themeforest.net/user/kirasiris">here</a>. Thanks so much!</p>
+</div>
+</div><!-- end div .borderTop -->
+
+<hr>
+
+<h2 id="toc" class="alt">Table of Contents</h2>
+<ol class="alpha">
+<li><a href="#howto">How to upload Iframes</a></li>
+<li><a href="#notiframe">If there's not iframe inserted, then what?</a></li>
+<li><a href="#javascript">Custom Javascript</a></li>
+<li><a href="#functions">Custom Functions</a></li>
+<li><a href="#credits">Sources and Credits</a></li>
+</ol>
+<!-- How to -->
+<hr>
+
+<h3 id="howto"><strong>A) How to upload Iframes</strong> - <a href="#toc">top</a></h3>
+<p>When posting or editing a post, go to the custom fields box and select the option "Iframe" , after selecting it, paste the iframe into the input next to it. You can add as many as you want</p>
+<img src="assets/images/insertiframe.png" class="img-thumbnail" alt="Insert Iframes" /><br><br>
+<p>So, to ensure that your iframe is shown <strong>do not forget to press the button below the custom field box "Add Custom Field"</strong></p>
+<p>This is how it will look like with 5 iframes</p>
+<img src="assets/images/postwihtiframes.png" class="img-thumbnail" alt="Insert Iframes" />
+<!-- not iframe Section -->
+<hr>
+
+
+<h3 id="notiframe"><strong>B) If there's not iframe inserted, then what?</strong> - <a href="#toc">top</a></h3>
+<p>If you decide not to upload an iframe, you will be still able to publish your content without showing the iframe tabs in the front-end by just <strong>deleting</strong> the custom field.</p>
+<img src="assets/images/deleteiframe.png" class="img-thumbnail" alt="delete iframe"><br><br>
+<p>This is how the single.php file will look like without iframes</p>
+<img src="assets/images/novideo.png" class="img-thumbnail" alt="not video" />
+<br><br>
+<p>Remember <strong>to delete</strong> any unwanted custom field</p>
+<!-- Javascript section -->
+<hr>
+
+<h1 id="javascript"><strong>C) JavaScript</strong> - <a href="#toc">top</a></h1>
+
+<p>The YoVideo Pro version template use a custom Javascripts code for the iframes</p>
+
+<h3>Custom Javascript on the end of single.php file</h3>
+
+<p>Check these scripts if you feel like improving it. What they do is blocking the iframes from being redirected to their servers and restarting the current video when a different option is selected</p>
+<pre>
+//Remove links on any Iframe. This avoids opening a browser tab redirecting to the website/server from which the Iframe is.
+$(function () {
+    $('a.removeBlank').on('click', function () {
+
+        if ($(this).attr('target') == "_blank") {
+            $(this).attr('target', '_self');
+        }
+
+        $(this).click();
+
+        return false;
+    })
+});
+// Solution to stop current video when a different option is clicked. This ensures that no "video background" occurs.
+$('a.nav-link').click(function(e) {    
+    $('div#myTabContent div.tab-pane.active iframe').attr('src',function() { return $(this).attr('src'); });
+});
+
+$('a.nav-link:first').trigger('click');
+</pre>
+<!-- Custom functions section -->
+<hr>
+
+<h1 id="functions"><strong>D) Custom Functions</strong> - <a href="#toc">top</a></h1>
+
+<p>The YoVideo Pro version template uses several custom functions</p>
+
+<h3>Custom functions on the functions.php file</h3>
+<p>The first one is for the iframes. Check it if you feel like improving it.</p>
+<pre>
+// Iframe
+function iframe($postID){
+	$iframe = 'Iframe';
+	$iframe_player = get_post_meta($postID, $iframe, true);
+	if($iframe_player==''){
+		delete_post_meta($postID,$iframe);
+		add_post_meta($postID,$iframe, '#');
+		return "#";
+		}
+	return $iframe_player;
+	}
+</pre>
+<p>The second one is for the login page. Check it if you feel like improving it.</p>
+<pre>
+function my_login_logo_url() {
+    return home_url();
+}
+add_filter( 'login_headerurl', 'my_login_logo_url' );
+
+function my_login_logo_url_title() {
+    return 'Mag Press';
+}
+add_filter( 'login_headertitle', 'my_login_logo_url_title' );
+function my_login_stylesheet() {
+    wp_enqueue_style( 'custom-login', get_stylesheet_directory_uri() . '/style.css' );
+}
+add_action( 'login_enqueue_scripts', 'my_login_stylesheet' );
+</pre>
+<strong>To customize the image background and the logo in the login page, you will need to access to style.css file. Find this(line 686 if not mistaken):</strong>
+<pre>
+body.login {
+	background: url(http://www.xsjjys.com/data/out/243/WHDQ-513778957.jpg) repeat center center;
+	background-size:cover;
+	}
+body.login div#login {}
+body.login div#login h1 {}
+body.login div#login h1 a {
+        background-image: url(images/login-register-lost.png);
+		height:80px;
+		width:80px;
+		background-size: 80px 80px;
+		background-repeat: no-repeat;
+        padding-bottom: 30px;
+	}
+/******************** Login Form ********************/
+body.login div#login form#loginform {
+	border: 1px solid #ffffff;
+    background: transparent;
+	}
+body.login div#login form#loginform p {}
+body.login div#login form#loginform p label {
+	color:#ffffff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+body.login div#login p#nav {
+	color:#ffffff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+body.login div#login p#nav a {
+	color:#ffffff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+body.login div#login p#backtoblog {}
+body.login div#login p#backtoblog a {
+	color:#ffffff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+/******************** Register Form ********************/
+body.login div#login form#registerform {
+	border: 1px solid #ffffff;
+    background: transparent;
+	}
+body.login div#login form#registerform p {
+	color:#ffffff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+body.login div#login form#registerform p label {
+	color:#ffffff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+/******************** Lost Password Form ********************/
+body.login div#login form#lostpasswordform {
+	border: 1px solid #ffffff;
+    background: transparent;
+	}
+body.login div#login form#lostpasswordform p {
+	color:#ffffff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+body.login div#login form#lostpasswordform p label {
+	color:#ffffff;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	}
+</pre>
+<p>The third one is to remove the WordPress welcome dashboard panel. You can delete this if you want to as this function does not affect the template on any way.</p>
+<pre>
+remove_action('welcome_panel', 'wp_welcome_panel');
+</pre>
+<p>The fourth one is for the excerpt lenght. You can change the number to the number you want to. If you feel like improving it, feel free to do so by finding this:</p>
+<pre>
+	function set_excerpt_length(){
+		return 20;
+		}
+	add_filter('excerpt_length' , 'set_excerpt_length');
+</pre>
+<p>The fifth function is to display or to count the views per post</p>
+<pre>
+// function to display number of posts.
+function getPostViews($postID){
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+        return "0 Views";
+    }
+    return $count.' Views';
+}
+
+// function to count views.
+function setPostViews($postID) {
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    }else{
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
+}
+
+
+// Add it to a column in WP-Admin
+add_filter('manage_posts_columns', 'posts_column_views');
+add_action('manage_posts_custom_column', 'posts_custom_column_views',5,2);
+function posts_column_views($defaults){
+    $defaults['post_views'] = __('Views');
+    return $defaults;
+}
+function posts_custom_column_views($column_name, $id){
+	if($column_name === 'post_views'){
+        echo getPostViews(get_the_ID());
+    }
+}
+</pre>
+<!-- Credits section -->
+<hr>
+
+<h1 id="credits"><strong>E) Sources and Credits</strong> - <a href="#toc">top</a></h1>
+<p>The YoVideo Pro version template was designed by <a href="https://w3layouts.com/" target="_blank">W3 Layout</a> and programmed with love by <a href="https://blogpersonal.net/" target="_blank">Kevin Fonseca</a></p>
+<p>In order to be allowed to use this desing, please do not delete the following comments in your style.css file. If you wish to delete it, go to <a href="https://w3layouts.com/" target="_blank">W3 Layout</a> and donate.</p>
+<pre>
+/*--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+</pre>
+All credits for using images on this template goes to their respective uploaders
+<hr>
+<p>Thanks for purchasing the template. If you need further help, please send a message to the email provided in the beginning of this file.</p> 
+<p>See more of my free templates on <a href="https://blogpersonal.net/" target="_blank">Kevin Fonseca</a> and my premium templates on <a href="https://themeforest.net/user/kirasiris/portfolio" target="_blank">My Envanto Portfolio</a></p>
+<p class="append-bottom alt large"><strong>Kevin Fonseca</strong></p>
+<p><a href="#toc">Go To Table of Contents</a></p>
+
+<hr class="space">
+</div>
+</div>
+</div><!-- end div .container -->
+</body>
+</html>

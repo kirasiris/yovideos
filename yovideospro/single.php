@@ -19,7 +19,7 @@
 <?php endif; ?>
 </ul>
 <div class="tab-content" id="myTabContent">
-<!--------------------------------------------------------- Content-tabs / Iframes players --------------------------------------------------------------------------------->
+<!-- Content-tabs / Iframes players -->
 <?php $player = get_post_custom_values( 'Iframe' ); ?>
 <?php if (is_array($player)) : ?>
 <?php foreach ($player as $key=>$iframe) : ?>
@@ -49,7 +49,7 @@
   <div class="clearfix"> </div>  
 <?php endif; ?>
 <?php endif; ?>
-<!--------------------------------------------------------------- Content --------------------------------------------------->
+<!-- Content -->
     	<div class="single-grid">
         	<a><?php the_title(); ?></a>
             	<?php the_content();  ?>
